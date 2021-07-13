@@ -12,3 +12,4 @@ if (\OC_User::isLoggedIn()) {
 }
 
 $app = new Application();
+$app->getContainer()->query("UserHooks")->register();

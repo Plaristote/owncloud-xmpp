@@ -20,7 +20,7 @@ class AuthHelper {
       return false;
     }
     Util::writeLog('xmpp', __METHOD__ . ": Preparing login of XMPP user '{$params['uid']}'", Util::DEBUG);
-    setcookie(self::COOKIE_XMPP_LOGIN, self::getUserEmail());
+    setcookie(self::COOKIE_XMPP_LOGIN, self::getCurrentUserEmail());
     setcookie(self::COOKIE_XMPP_PASSWORD, $params['password']);
     return true;
   }
@@ -38,12 +38,17 @@ class AuthHelper {
    * If the uid is an email, it'll return it regardless of the user email.
    * If neither the uid or the user email are an email, it'll return the uid.
    */
-  public static function getUserEmail() {
-    $uid = \OC::$server->getUserSession()->getUser()->getUID();
+  public static function getCurrentUserEmail() {
+    $user = \OC::$server->getUserSession()->getUser();
+    return self::getUserEmail($user);
+  }
+
+  public static function getUserEmail($user) {
+    $uid = $user->getUID();
     if (strpos($uid, '@') !== false) {
       return $uid;
     }
-    $email = \OC::$server->getUserSession()->getUser()->getEMailAddress();
+    $email = $user->getEMailAddress();
     if (strpos($email, '@') !== false) {
       return $email;
     }
