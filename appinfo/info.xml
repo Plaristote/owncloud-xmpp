@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<info>
+	<id>xmpp</id>
+	<namespace>XMPP</namespace>
+	<name>XMPP Server</name>
+	<license>AGPL</license>
+	<author>Michael Martin Moro</author>
+	<version>1.0.0</version>
+	<dependencies>
+		<owncloud min-version="10.0" max-version="11.0" />
+	</dependencies>
+	<description>
+		Integrates XMPP into OwnCloud using Prosody and JSXC.
+	</description>
+	<category>integration</category>
+	<website>https://github.com/Plaristote/owncloud-xmpp/</website>
+</info>
