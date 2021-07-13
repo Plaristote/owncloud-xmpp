@@ -4,6 +4,7 @@ namespace OCA\XMPP\Hooks;
 use \OCP\Util;
 use \OCA\XMPP\AuthHelper;
 use \OCA\XMPP\Prosody;
+use \OCA\XMPP\Roster;
 
 class UserHooks {
   public function __construct($userManager) {
@@ -23,15 +24,19 @@ class UserHooks {
 
   public static function onPostSetPassword($user, $password) {
     $jid = AuthHelper::getUserEmail($user);
-    if (!Prosody::exists($jid))
+    if (!Prosody::exists($jid)) {
       Prosody::register($jid, $password);
+      Roster::addUser($jid, Prosody::domainFromJid($jid));
+    }
     else
       Prosody::setPassword($jid, $password);
   }
 
   public static function onPostDelete($user) {
     $jid = AuthHelper::getUserEmail($user);
-    if (Prosody::exists($jid))
+    if (Prosody::exists($jid)) {
+      Roster::removeUser($jid, Prosody::domainFromJid($jid));
       Prosody::remove($jid);
+    }
   }
 }

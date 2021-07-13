@@ -4,9 +4,17 @@ namespace OCA\XMPP;
 use \OCP\Util;
 
 class Prosody {
+  public static function usernameFromJid($jid) {
+    return explode('@', $jid)[0];
+  }
+
+  public static function domainFromJid($jid) {
+    return explode('@', $jid)[1];
+  }
+
   public static function register($jid, $password) {
-    $username = explode('@', $jid)[0];
-    $domain   = explode('@', $jid)[1];
+    $username = self::usernameFromJid($jid);
+    $domain   = self::domainFromJid($jid);
     $out      = shell_exec("prosodyctl register ".$username." ".$domain.' "'.$password.'"');
     Util::writeLog('xmpp', "Created user for ".$jid.": ".$out, Util::INFO);
   }
@@ -22,9 +30,10 @@ class Prosody {
   }
 
   public static function exists($jid) {
-    $username = explode('@', $jid)[0];
-    $domain   = explode('@', $jid)[1];
-    $folder   = str_replace(".", "%2", $domain);
+    $username = self::usernameFromJid($jid);
+    $domain   = self::domainFromJid($jid);
+    $folder   = str_replace(".", "%2e", $domain);
+    $username = str_replace(".", "%2e", $username);
     return file_exists("/var/lib/prosody/".$folder."/accounts/".$username.".dat");
   }
 }
