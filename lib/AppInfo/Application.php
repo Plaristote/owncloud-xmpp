@@ -2,6 +2,7 @@
 namespace OCA\XMPP\AppInfo;
 
 use \OCP\AppFramework\App;
+use \OCP\Util;
 use \OCA\XMPP\AuthHelper;
 
 class UserHooks {
