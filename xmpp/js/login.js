@@ -13,6 +13,17 @@ window.jsxc = new JSXC({
   }
 });
 
+function xmppClearStore() {
+  for (var i = 0 ; i < localStorage.length ;) {
+    var key = localStorage.key(i);
+
+    if (key.startsWith("jsxc2:"))
+      localStorage.removeItem(key);
+    else
+      ++i;
+  }
+}
+
 function xmppGetCookie(name) {
   const fullName = "oc-xmpp-" + name;
   const cookie   = document.cookie.split('; ').find(function(row) { return row.startsWith(fullName + '='); });
@@ -31,3 +42,4 @@ function xmppSignIn() {
 }
 
 $(document).ready(xmppSignIn);
+$(window).unload(xmppClearStore);
